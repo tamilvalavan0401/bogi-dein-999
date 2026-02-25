@@ -7,15 +7,29 @@ export default function Navbar() {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      // Random number between 20 and 98
-      const newCount = Math.floor(Math.random() * (98 - 20 + 1)) + 20;
-      setVisitorCount(newCount);
-    }, 3000); // Changes every 3 seconds
+      setVisitorCount((prevCount) => {
+        // Random increment of 1, 2, 3, or 4
+        const increment = Math.floor(Math.random() * 4) + 1;
+        let newCount = prevCount + increment;
+        
+        // If exceeds 99, reset to random number between 10 and 30
+        if (newCount > 99) {
+          newCount = Math.floor(Math.random() * (30 - 10 + 1)) + 10;
+        }
+        
+        // Ensure minimum is 10
+        if (newCount < 10) {
+          newCount = 10;
+        }
+        
+        return newCount;
+      });
+    }, 240000); // 4 minutes = 240000 milliseconds
 
     return () => clearInterval(interval);
   }, []);
 
-  const handleSmoothScroll = (e:any, targetId:any) => {
+  const handleSmoothScroll = (e: any, targetId: any) => {
     e.preventDefault();
     const element = document.querySelector(targetId);
     if (element) {
